@@ -7,10 +7,46 @@
         </div>
         <div class="flex text-dark dark:text-white items-center gap-3">
             <div class="flex bg-primary bg-opacity-10 rounded-full py-2 pl-4 pr-2 items-center gap-1">
-                <p class="text-dark dark:text-white">351</p>
+                <p class="text-dark dark:text-white">{{ userInfos.profile.coins }}</p>
                 <img src="~/assets/imgs/icons/coin.svg" class="w-6 h-6 object-cover object-center rounded-full" />
             </div>
-            <img src="~/assets/imgs/photo.jpg" class="w-10 h-10 object-cover object-center rounded-full shadow-md" />
+            <img :src="userInfos?.profile.pp" class="w-10 h-10 object-cover object-center rounded-full shadow-md" />
         </div>
     </div>
 </template>
+
+<script>
+import { generatetoken } from '~~/mixins/auth'
+export default {
+    data() {
+        return {
+            base_url: "http://localhost:8080",
+            generatetoken: generatetoken,
+            userInfos: {profile:{pp:""}}
+        }
+    },
+    methods: {
+        getDbInfos: function () {
+            if (window.localStorage.getItem("user")) return this.userInfos = JSON.parse(window.localStorage.getItem("user"))
+            console.log(window.localStorage.getItem("user"))
+            fetch(this.base_url + "/user/"+JSON.parse(window.localStorage.getItem("user"))?.id, {
+                method: "GET",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+            }).then(response => response.json())
+                .then(async (response) => {
+                    console.log(response[0])
+                    this.userInfos = response[0]
+                })
+                .catch(async e => {
+                    return console.log(e)
+                })
+        },
+    },
+    mounted() {
+        this.getDbInfos()
+    },
+}
+</script>
