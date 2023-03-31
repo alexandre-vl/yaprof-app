@@ -1,6 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 
 export default defineNuxtConfig({
+    modules: ['@nuxtjs/color-mode'],
     app: {
         head: {
             title: "Yaprof",
@@ -63,5 +64,8 @@ export default defineNuxtConfig({
             API_URL: 'http://localhost:3000',
         }
     },
+    colorMode: {
+        classSuffix: ""
+    }
 })
 
