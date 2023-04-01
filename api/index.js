@@ -72,6 +72,30 @@ app.post('/user/create', async (req, res) => {
                 }
             }
         })
+    } else {
+        await prisma.user.update({
+            where: {
+                name: req.query.name
+            },
+            data: {
+                profile: {
+                    update: {
+                        pp: req.query.pp,
+                    },
+                }
+            },
+            include: {
+                profile: true,
+            },
+        })
+        user = await prisma.user.findMany({
+            where: {
+                name: req.query.name
+            },
+            include: {
+                profile: true,
+            },
+        })
     }
     res.json(user)
 })

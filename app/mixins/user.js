@@ -1,7 +1,7 @@
 let baseurl = "http://localhost:8080"
 
 export function createUser(name, pp, clas, etab) {
-    fetch(baseurl + '/user/create?name='+name+'&&pp='+pp+'&&class='+ clas +'&&=etab'+etab, {
+    fetch(baseurl + '/user/create?name='+name+'&&pp='+pp+'&&class='+ clas +'&&=etab'+etab+'&&=pp'+pp, {
         method: "POST",
         headers: {
             'Accept': 'application/json',
@@ -9,9 +9,10 @@ export function createUser(name, pp, clas, etab) {
         }
     }).then(response => response.json())
         .then(response => {
-            console.log(response[0]?.name)
-            if (response[0]?.name) {
-                window.localStorage.setItem('user', JSON.stringify(response[0]))
+            response = response[0] ?? response
+            console.log(response)
+            if (response?.name) {
+                window.localStorage.setItem('user', JSON.stringify(response))
             }
             return true
         })
